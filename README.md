@@ -1,6 +1,15 @@
 This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
+## Team
+Capstone project for implemented by our team of 4 people, listed below:
 
-Please use **one** of the two installation options, either native **or** docker installation.
+|**Name**|**E-Mail**|
+|:-------|----------|---------:|
+|Maxim Marant| maxim_marant@web.de|Team Lead|
+|Polina Latypova|p_latypova@mail.ru|Team Member 1|
+|Róbert Mikulás|rmikulas@gmail.com|Team Member 2|
+|Géraud Martin-Montchalin|geraudmartinmontchalin@gmail.com|Team Member 3|
+
+
 ## Project Overview
 The capstone project of the Udacitys "Self-Driving Car Engineer" Nanodegree Program consist of 3 main parts: **Perception**, **Planning** and **Control**. Below you can find general approach for each part:
 
