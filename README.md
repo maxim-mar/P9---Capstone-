@@ -1,6 +1,18 @@
 This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
 
 Please use **one** of the two installation options, either native **or** docker installation.
+## Project Overview
+The capstone project of the Udacitys "Self-Driving Car Engineer" Nanodegree Program consist of 3 main parts: **Perception**, **Planning** and **Control**. Below you can find general approach for each part:
+
+![](https://video.udacity-data.com/topher/2017/September/59b6d115_final-project-ros-graph-v2/final-project-ros-graph-v2.png)
+
+
+#### Perception
+Perception is based on two ROS Nodes " Traffic Light Detection" and "Obstacle Detection". Since the highway track in the simulator and also in real life to not have any obstacles, we were concetrated on the correct prediciton of the traffic light. For the traffic light detection we have to implement two modules *tl_detector* and *tl_classifier*. For the *tl_detector* a lot of information were provided during the walkthrough so it could be easily implemented. For the classification there was no requirement from udacity. Literature research and also reverse engineering of the "Autoware" code showed that the best way to implement the classifier is to use the tensorflow object dection API. Autoware has used [SSD Inception V2 model] (https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md) for this project and this was also the way which we have followed in our capstone project. The usage of the pre trained API and also dataset collected from the udacity simulator was provided by [Alex Lechner](https://github.com/alex-lechner/Traffic-Light-Classification) and described in this [Medium Article](https://becominghuman.ai/traffic-light-detection-tensorflow-api-c75fdbadac62). Two seperate models are trained for simulator and real-world testing. Both models were trained for 20,000 steps.The model can detect the traffic lights correctly in the simulator and show the results in the command line.
+
+#### Planing 
+
+#### Control
 
 ### Native Installation
 
