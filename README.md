@@ -2,12 +2,12 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 ## Team
 Capstone project for implemented by our team of 4 people, listed below:
 
-|**Name**|**E-Mail**|
+|**Name**|**E-Mail**|**Role**|
 |:-------|----------|---------:|
-|Maxim Marant| maxim_marant@web.de|Team Lead|
-|Polina Latypova|p_latypova@mail.ru|Team Member 1|
-|Róbert Mikulás|rmikulas@gmail.com|Team Member 2|
-|Géraud Martin-Montchalin|geraudmartinmontchalin@gmail.com|Team Member 3|
+| Maxim Marant | maxim_marant@web.de | Team Lead|
+| Polina Latypova | p_latypova@mail.ru | Team Member 1 |
+| Róbert Mikulás | rmikulas@gmail.com | Team Member 2 |
+| Géraud Martin-Montchalin | geraudmartinmontchalin@gmail.com | Team Member 3 |
 
 
 ## Project Overview
