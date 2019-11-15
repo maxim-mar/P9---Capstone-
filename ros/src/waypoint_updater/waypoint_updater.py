@@ -3,7 +3,7 @@
 import rospy
 import numpy as np
 from geometry_msgs.msg import PoseStamped
-from styx_msgs.msg import Lane, Waypoint
+from styx_msgs.msg import Lane, Waypoint, TrafficLightArray
 from std_msgs.msg import Int32
 from scipy.spatial import KDTree
 
@@ -35,7 +35,7 @@ class WaypointUpdater(object):
 
         # Subscribing for the '/vehicle/traffic_lights' topic
         # This should be changed for the real tl detection topic
-        rospy.Subscriber('/vehicle/traffic_lights', Int32, self.traffic_light_cb)
+        rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_light_cb)
 
 
         #rospy.Subscriber('/obstacle_waypoint', Int32, self.obstacle_cb)
@@ -50,6 +50,7 @@ class WaypointUpdater(object):
         self.waypoints_2d = None
         self.waypoint_tree = None
         self.stopline_wp_idx = -1
+	self.tr_light = None
 
         self.loop()
 
@@ -87,20 +88,21 @@ class WaypointUpdater(object):
     def publish_waypoints(self, closest_idx):
         lane = Lane()
         lane.header = self.base_waypoints.header
-        base_waypoints = self.base_waypoints.waypoints[closest_idx : closest_idx + LOOKAHEAD_WPS]
+	lane.waypoints = self.base_waypoints.waypoints[closest_idx : closest_idx + LOOKAHEAD_WPS]
 
         if self.stopline_wp_idx == -1 or (self.stopline_wp_idx >= closest_idx + LOOKAHEAD_WPS):
-            lane.waypoints = base_waypoints
+	    self.final_waypoints_pub.publish(lane)
         else:
-            lane.waypoints = self.decelerate_waypoints(base_waypoints, closest_idx)
+	    lane.waypoints = self.decelerate_waypoints(lane.waypoints, closest_idx)
+	    self.final_waypoints_pub.publish(lane)
 
-        self.final_waypoints_pub.publish(lane)
 
     def decelerate_waypoints(self, waypoints, closest_idx):
         temp = []
         for i, wp in enumerate(waypoints):
             p = Waypoint()
-            p.pose = self.pose_cb
+            #p.pose = self.pose_cb
+	    p.pose = wp.pose
             stop_idx = max(self.stopline_wp_idx-closest_idx-2,0)
             dist = self.distance(waypoints,i,stop_idx)
             vel = math.sqrt(2 * MAX_DECEL * dist)
@@ -130,10 +132,10 @@ class WaypointUpdater(object):
 
     def traffic_light_cb(self, msg):
         # TODO: Callback for /vehicle/traffic_light'. Implement
-        self.tr_light = msg.data
+        self.tr_light = msg
 
     def obstacle_cb(self, msg):
-        # TODO: Callback for /obstacle_waypoint message. We will implement it later
+        # TODO: Callback for /obstacle_waypoint message
         pass
 
     def get_waypoint_velocity(self, waypoint):
