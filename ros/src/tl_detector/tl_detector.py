@@ -17,7 +17,6 @@ from styx_msgs.msg import TrafficLight
 
 
 STATE_COUNT_THRESHOLD = 2
-IMAGES_TO_SKIP = 3
 COLOR_NAME_MAPPING = {TrafficLight.GREEN:'GREEN',
                       TrafficLight.RED:'RED',
                       TrafficLight.YELLOW:'YELLOW',
@@ -86,12 +85,7 @@ class TLDetector(object):
             msg (Image): image from car-mounted camera
         """
         self.has_image = True
-        img_array = []
-
-        for i in range (IMAGES_TO_SKIP+2):
-            img_array.append (msg)
-            if i == (IMAGES_TO_SKIP+1):
-                self.camera_image = img_array[i]
+        self.camera_image = msg
     
         light_wp, state = self.process_traffic_lights()
     
@@ -185,7 +179,7 @@ class TLDetector(object):
                     line_wp_idx = temp_wp_idx
 
         if closest_light:
-            if self.distance(closest_light.pose.pose.position.x, closest_light.pose.pose.position.y,closest_light.pose.pose.position.z, self.pose.pose.position.x, self.pose.pose.position.y, self.pose.pose.position.z) <= 100:
+            if self.distance(closest_light.pose.pose.position.x, closest_light.pose.pose.position.y,closest_light.pose.pose.position.z, self.pose.pose.position.x, self.pose.pose.position.y, self.pose.pose.position.z) <= 150:
                 state = self.get_light_state(closest_light)
                 rospy.logwarn('line_wp_idx: {0}'.format(line_wp_idx))
                 rospy.logwarn('light state: {0}'.format(state))
