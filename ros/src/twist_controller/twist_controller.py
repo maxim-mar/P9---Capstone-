@@ -52,15 +52,16 @@ class Controller(object):
         self.last_time = current_time
         
         throttle = self.throttle_controller.step(vel_error, sample_time)
+        decel = max(vel_error, self.decel_limit)
+        torque = abs(decel) * (self.vehicle_mass + self.fuel_capacity*GAS_DENSITY) * self.wheel_radius 
         brake = 0.0
         
         if linear_vel == 0. and current_vel < 0.1:
             throttle = 0
-            brake = 400 #N*m to hold the car in place if we are stopped at alight. Acceleration ~= 1 m/s^2
+            brake = torque #N*m to hold the car in place if we are stopped at alight. Acceleration ~= 1 m/s^2
             
         elif throttle < .1 and vel_error < 0:
                 throttle = 0
-                decel = max(vel_error, self.decel_limit)
-                brake = abs(decel)*self.vehicle_mass*self.wheel_radius #Torquw N*m
+                brake = torque #Torquw N*m
         
         return throttle, brake, steering
