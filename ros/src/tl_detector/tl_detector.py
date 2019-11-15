@@ -10,13 +10,11 @@ from cv_bridge import CvBridge
 from light_classification.tl_classifier import TLClassifier
 import tf
 import cv2
-import math
 import yaml
 from scipy.spatial import KDTree
 from styx_msgs.msg import TrafficLight
 
-
-STATE_COUNT_THRESHOLD = 2
+STATE_COUNT_THRESHOLD = 3
 COLOR_NAME_MAPPING = {TrafficLight.GREEN:'GREEN',
                       TrafficLight.RED:'RED',
                       TrafficLight.YELLOW:'YELLOW',
@@ -106,13 +104,7 @@ class TLDetector(object):
         else:
             self.upcoming_red_light_pub.publish(Int32(self.last_wp))
         self.state_count += 1
-        
-    def distance(self, x1, y1, z1, x2, y2, z2):
 
-        dist = math.sqrt((x1-x2)**2 + (y1-y2)**2  + (z1-z2)**2)
-
-        return dist
-    
     def get_closest_waypoint(self, x, y):
         """Identifies the closest path waypoint to the given position
             https://en.wikipedia.org/wiki/Closest_pair_of_points_problem
@@ -157,7 +149,6 @@ class TLDetector(object):
         """
         closest_light = None
         line_wp_idx = None
-        state = TrafficLight.UNKNOWN
 
         # List of positions that correspond to the line to stop in front of for a given intersection
         stop_line_positions = self.config['stop_line_positions']
@@ -179,10 +170,9 @@ class TLDetector(object):
                     line_wp_idx = temp_wp_idx
 
         if closest_light:
-            if self.distance(closest_light.pose.pose.position.x, closest_light.pose.pose.position.y,closest_light.pose.pose.position.z, self.pose.pose.position.x, self.pose.pose.position.y, self.pose.pose.position.z) <= 150:
-                state = self.get_light_state(closest_light)
-                rospy.logwarn('line_wp_idx: {0}'.format(line_wp_idx))
-                rospy.logwarn('light state: {0}'.format(state))
+            state = self.get_light_state(closest_light)
+            rospy.logwarn('line_wp_idx: {0}'.format(line_wp_idx))
+            rospy.logwarn('light state: {0}'.format(state))
             return line_wp_idx, state
 
         return -1, TrafficLight.UNKNOWN
