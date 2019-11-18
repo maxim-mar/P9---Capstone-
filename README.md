@@ -19,9 +19,12 @@ The capstone project of the Udacitys "Self-Driving Car Engineer" Nanodegree Prog
 #### Perception
 Perception is based on two ROS Nodes " Traffic Light Detection" and "Obstacle Detection". Since the highway track in the simulator and also in real life to not have any obstacles, we were concetrated on the correct prediciton of the traffic light. For the traffic light detection we have to implement two modules *tl_detector* and *tl_classifier*. For the *tl_detector* a lot of information were provided during the walkthrough so it could be easily implemented. For the classification there was no requirement from udacity. Literature research and also reverse engineering of the "Autoware" code showed that the best way to implement the classifier is to use the tensorflow object dection API. Autoware has used [SSD Inception V2 model](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md) for this project and this was also the way which we have followed in our capstone project. The usage of the pre trained API and also dataset collected from the udacity simulator was provided by [Alex Lechner](https://github.com/alex-lechner/Traffic-Light-Classification) and described in this [Medium Article](https://becominghuman.ai/traffic-light-detection-tensorflow-api-c75fdbadac62). Two seperate models are trained for simulator and real-world testing. Both models were trained for 20,000 steps.The model can detect the traffic lights correctly in the simulator and show the results in the command line.
 
-#### Planing 
+#### Planning 
+Planning module based on "Waypoint Loader" and "Waypoint Updater" ROS nodes. Waypoint loader loads the track, and Waypoint updater updates the track: according to the current pose of the car (/current_pose topic) it calculates the closest point and formes a set of certain number of waypoints from closest waypoint to closest waypoint + LOOKAHEAD_WPS. 
+It also implements method decelerate_waypoints which allows a car to slow down if an obstacle (in our case - traffic light) is detected ahead.
 
 #### Control
+Control module is based on "Waypoint follower" and "Twist controller" ROS packages. Waypoint follower implements a well-known and popular Pure Pursuit method to follow a set of waypoints. It sends messages to DBW node (from Twist controller package) through /twist_cmd topic. DBW node using Twist controller forms steering, brake and throttle commands. Twist controller uses simple PID controller to form throttle control commands, yaw controller to form steering commands, and calculates brake command on the base of throttle, current velocity and linear velocity values.
 
 ### Native Installation
 
