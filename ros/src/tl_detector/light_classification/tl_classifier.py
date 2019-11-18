@@ -8,7 +8,7 @@ import datetime
 class TLClassifier(object):
     def __init__(self):
         #TODO load classifier
-        self.mode = input (int("Press "1" for Simulator Mode \nPress "2" for Real-Life Mode"))
+        self.mode = input ("Press '1' for Simulator Mode \nPress '2' for Real-Life Mode")
 
         if self.mode == 1:
             PATH_TO_GRAPH = 'light_classification/model/frozen_inference_graph_sim3.pb'
