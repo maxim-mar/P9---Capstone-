@@ -120,9 +120,9 @@ class TLDetector(object):
             cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "rgb8")
             #Perform classification here
             state = self.light_classifier.classify(cv_image)
-            # Use last state if classifier is not sure
+            # Set light to RED if the car is not sure about the light state and stop for safety reasons
             if state == TrafficLight.UNKNOWN and self.last_state:
-                state = self.last_state
+                state = TrafficLight.RED
             return state
 
     def process_traffic_lights(self):
@@ -139,7 +139,7 @@ class TLDetector(object):
 
         if hasattr(self, 'waypoints') and hasattr(self, 'pose'):
 
-            min_dist = float('inf')
+            min_dist = 100.0
 
             car_wp = self.get_closest_waypoint(self.pose.pose)
 
