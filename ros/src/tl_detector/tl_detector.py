@@ -11,9 +11,11 @@ from light_classification.tl_classifier import TLClassifier
 import tf
 import cv2
 import yaml
+import math
 from scipy.spatial import KDTree
 from styx_msgs.msg import TrafficLight
 
+min_dist = 100.0
 STATE_COUNT_THRESHOLD = 2
 COLOR_NAME_MAPPING = {TrafficLight.GREEN:'GREEN',
                       TrafficLight.RED:'RED',
@@ -70,7 +72,7 @@ class TLDetector(object):
         if not self.waypoints_2d:
             self.waypoints_2d = [[waypoint.pose.pose.position.x, waypoint.pose.pose.position.y] for waypoint in waypoints.waypoints]
             self.waypoint_tree = KDTree(self.waypoints_2d)
-            rospy.logwarn(self.waypoint_tree)
+
 
 
     def traffic_cb(self, msg):
@@ -118,6 +120,18 @@ class TLDetector(object):
         closest_idx = self.waypoint_tree.query([x, y], 1)[1]
         return closest_idx
 
+    def calclulate_distance_to_traffic_light(self, car_waypoint, light_waypoint):
+        tl_dist = self.calc_distance_coords_2D(self.waypoints.waypoints[car_waypoint].pose.pose.position.x,
+                                               self.waypoints.waypoints[car_waypoint].pose.pose.position.y,
+                                               self.waypoints.waypoints[light_waypoint].pose.pose.position.x,
+                                               self.waypoints.waypoints[light_waypoint].pose.pose.position.y)
+        return tl_dist
+
+
+    def calc_distance_coords_2D(self, x1, y1, x2, y2):
+        return math.sqrt((x2-x1)**2 + (y2-y1)**2)
+
+
     def get_light_state(self, light):
         """Determines the current color of the traffic light
         Args:
@@ -134,8 +148,13 @@ class TLDetector(object):
 
         cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
 
+   
         # #Get classification
         result = self.light_classifier.get_classification(cv_image)
+
+        # If the classifier is not sure, stop the car for safety reasons
+        if result == TrafficLight.UNKNOWN and self.last_state:
+            result = TrafficLight.RED
         return result
 
 
@@ -149,6 +168,7 @@ class TLDetector(object):
         closest_light = None
         line_wp_idx = None
 
+
         # List of positions that correspond to the line to stop in front of for a given intersection
         stop_line_positions = self.config['stop_line_positions']
         if(self.pose):
@@ -161,6 +181,9 @@ class TLDetector(object):
                 # Get stop line waypoint index
                 line = stop_line_positions[i]
                 temp_wp_idx = self.get_closest_waypoint(line[0], line[1])
+
+
+
                 # Find closest stop line waypoint index
                 d = temp_wp_idx - car_wp_idx
                 if d >= 0 and d < diff:
@@ -168,7 +191,9 @@ class TLDetector(object):
                     closest_light = light
                     line_wp_idx = temp_wp_idx
 
-        if closest_light:
+        tl_dist = self.calclulate_distance_to_traffic_light(car_wp_idx, line_wp_idx)
+
+        if closest_light and (tl_dist < min_dist):
             state = self.get_light_state(closest_light)
             return line_wp_idx, state
 
