@@ -54,8 +54,8 @@ class TLClassifier(object):
         scores = np.squeeze(scores)
         classes = np.squeeze(classes).astype(np.int32)
 
-        print(‘SCORES: ’, scores[0])
-        print(‘CLASSES: ’, classes[0])
+        print('SCORES: ', scores[0])
+        print('CLASSES: ', classes[0])
 
 
         if scores[0] > self.threshold:
