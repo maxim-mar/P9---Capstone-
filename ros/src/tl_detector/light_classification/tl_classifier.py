@@ -13,7 +13,7 @@ class TLClassifier(object):
         if self.mode == 1:
             PATH_TO_GRAPH = 'light_classification/model/frozen_inference_graph_sim3.pb'
         else:
-            PATH_TO_GRAPH = 'light_classification/model/frozen_inference_graph_real.pb'
+            PATH_TO_GRAPH = 'light_classification/model/frozen_inference_graph_real4.pb'
         self.graph = tf.Graph()
         self.threshold = .5
 
@@ -58,15 +58,29 @@ class TLClassifier(object):
         print('CLASSES: ', classes[0])
 
 
-        if scores[0] > self.threshold:
-            if classes[0] == 1:
-                print('Current light state is: GREEN')
-                return TrafficLight.GREEN
-            elif classes[0] == 2:
-                print('Current light state is: RED')
-                return TrafficLight.RED
-            elif classes[0] == 3:
-                print('Current light state is: YELLOW')
-                return TrafficLight.YELLOW
+        if mode == 2:
+            if scores[0] > self.threshold:
+                if classes[0] == 1:
+                    print('Current light state is: GREEN')
+                    return TrafficLight.GREEN
+                elif classes[0] == 2:
+                    print('Current light state is: RED')
+                    return TrafficLight.YELLOW
+                elif classes[0] == 3:
+                    print('Current light state is: YELLOW')
+                    return TrafficLight.RED
+
+
+        else:
+            if scores[0] > self.threshold:
+                if classes[0] == 1:
+                    print('Current light state is: GREEN')
+                    return TrafficLight.GREEN
+                elif classes[0] == 2:
+                    print('Current light state is: RED')
+                    return TrafficLight.RED
+                elif classes[0] == 3:
+                    print('Current light state is: YELLOW')
+                    return TrafficLight.YELLOW
 
         return TrafficLight.UNKNOWN
