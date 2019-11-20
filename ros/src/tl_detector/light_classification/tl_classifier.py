@@ -13,7 +13,7 @@ class TLClassifier(object):
 
         if self.mode == 1:
             PATH_TO_GRAPH = 'light_classification/model/frozen_inference_graph_sim3.pb'
-        else:
+        else self.mode == 2:
             PATH_TO_GRAPH = 'light_classification/model/frozen_inference_graph_real4.pb'
         self.graph = tf.Graph()
         self.threshold = .5
@@ -70,27 +70,52 @@ class TLClassifier(object):
 
         self.file_nr += 1
         self.img_file = 'ND'
-        if scores[0] > self.threshold:
 
-            if classes[0] == 1:
-                self.img_file = 'GREEN'
-                print('Current light state is: GREEN')
-                mpimg.imsave('../images/' + self.img_file + str(self.file_nr) + '.jpg',
-                             cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-                return TrafficLight.GREEN
-            elif classes[0] == 2:
-                self.img_file = 'RED'
-                print('Current light state is: RED')
-                mpimg.imsave('../images/' + self.img_file + str(self.file_nr) + '.jpg',
-                             cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-                return TrafficLight.RED
-            elif classes[0] == 3:
-                self.img_file = 'YELLOW'
-                print('Current light state is: YELLOW')
-                mpimg.imsave('../images/' + self.img_file + str(self.file_nr) + '.jpg',
-                             cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        if self.mode == 1:
+            if scores[0] > self.threshold:
 
-                return TrafficLight.YELLOW
+                if classes[0] == 1:
+                    self.img_file = 'GREEN'
+                    print('Current light state is: GREEN')
+                    mpimg.imsave('../images/' + self.img_file + str(self.file_nr) + '.jpg',
+                                 cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+                    return TrafficLight.GREEN
+                elif classes[0] == 2:
+                    self.img_file = 'RED'
+                    print('Current light state is: RED')
+                    mpimg.imsave('../images/' + self.img_file + str(self.file_nr) + '.jpg',
+                                 cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+                    return TrafficLight.RED
+                elif classes[0] == 3:
+                    self.img_file = 'YELLOW'
+                    print('Current light state is: YELLOW')
+                    mpimg.imsave('../images/' + self.img_file + str(self.file_nr) + '.jpg',
+                                 cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+                    return TrafficLight.YELLOW
+
+        elif self.mode == 2:
+            if scores[0] > self.threshold:
+
+                if classes[0] == 1:
+                    self.img_file = 'GREEN'
+                    print('Current light state is: GREEN')
+                    mpimg.imsave('../images/' + self.img_file + str(self.file_nr) + '.jpg',
+                                 cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+                    return TrafficLight.GREEN
+                elif classes[0] == 2:
+                    self.img_file = 'YELLOW'
+                    print('Current light state is: YELLOW')
+                    mpimg.imsave('../images/' + self.img_file + str(self.file_nr) + '.jpg',
+                                 cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+                    return TrafficLight.YELLOW
+                elif classes[0] == 3:
+                    self.img_file = 'RED'
+                    print('Current light state is: RED')
+                    mpimg.imsave('../images/' + self.img_file + str(self.file_nr) + '.jpg',
+                                 cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+                    return TrafficLight.RED
+
+
 
         mpimg.imsave('../images/'+self.img_file + str(self.file_nr)+'.jpg', cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
