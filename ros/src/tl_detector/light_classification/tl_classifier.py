@@ -13,7 +13,7 @@ class TLClassifier(object):
 
         if self.mode == 1:
             PATH_TO_GRAPH = 'light_classification/model/frozen_inference_graph_sim3.pb'
-        else self.mode == 2:
+        elif self.mode == 2:
             PATH_TO_GRAPH = 'light_classification/model/frozen_inference_graph_real4.pb'
         self.graph = tf.Graph()
         self.threshold = .5
