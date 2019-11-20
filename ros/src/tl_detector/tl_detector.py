@@ -138,7 +138,7 @@ class TLDetector(object):
         return math.sqrt((x2-x1)**2 + (y2-y1)**2)
 
 
-    def get_light_state(self, light):
+    def get_light_state(self):
         """Determines the current color of the traffic light
         Args:
             light (TrafficLight): light to classify
