@@ -80,7 +80,7 @@ class TLClassifier(object):
 
 
         # Save images of detected lights in a separate folder "/ros/src/images" => folder have to be created upfront
-        if self.img_print == True
+        if self.img_print == True:
             if self.mode == 1:
                 if scores[0] > self.threshold:
 
