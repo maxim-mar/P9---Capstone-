@@ -125,7 +125,7 @@ class TLClassifier(object):
                                      cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
                         return TrafficLight.RED
 
-             mpimg.imsave('../images/'+self.img_file + str(self.file_nr)+'.jpg', cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+            mpimg.imsave('../images/'+self.img_file + str(self.file_nr)+'.jpg', cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
         # Proceed without saving images 
         else:
