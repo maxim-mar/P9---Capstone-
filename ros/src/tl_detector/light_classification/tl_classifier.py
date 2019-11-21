@@ -10,7 +10,7 @@ class TLClassifier(object):
     def __init__(self):
 
         # Should the detected images of the traffic lights be saved in a separate folder?
-        self.img_print = False
+        self.img_print = True
 
         # Check if the classifier should run in the Simulator or Carla mode
         self.mode = input ("Press '1' for Simulator Mode \nPress '2' for CARLA Mode\n")
@@ -65,12 +65,20 @@ class TLClassifier(object):
         boxes = np.squeeze(boxes)
         scores = np.squeeze(scores)
         classes = np.squeeze(classes).astype(np.int32)
-        Y1 = int(image.shape[0]*boxes[0,0])
-        X1 = int(image.shape[1]*boxes[0,1])
-        Y2 = int(image.shape[0] * boxes[0, 2])
-        X2 = int(image.shape[1] * boxes[0, 3])
 
-        cv2.rectangle(image, (X1, Y1), (X2, Y2), (0, 0, 255),2)
+        # In simulator we mark 3 boxes, in Carla only one
+        if self.mode == 1:
+            max_boxes = 3
+        elif self.mode == 2:
+            max_boxes = 1
+
+        for i in range(min(boxes.shape[0], max_boxes)):
+            Y1 = int(image.shape[0] * boxes[i, 0])
+            X1 = int(image.shape[1] * boxes[i, 1])
+            Y2 = int(image.shape[0] * boxes[i, 2])
+            X2 = int(image.shape[1] * boxes[i, 3])
+
+            cv2.rectangle(image, (X1, Y1), (X2, Y2), (0, 0, 255), 2)
 
         print('SCORES:', scores[0])
         print('CLASSES:', classes[0])
