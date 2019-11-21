@@ -16,7 +16,7 @@ class TLClassifier(object):
         self.mode = input ("Press '1' for Simulator Mode \nPress '2' for CARLA Mode\n")
 
         if self.mode == 1:
-            PATH_TO_GRAPH = 'light_classification/model/frozen_inference_graph_sim3.pb'
+            PATH_TO_GRAPH = 'light_classification/model/frozen_inference_graph_sim.pb'
         elif self.mode == 2:
             PATH_TO_GRAPH = 'light_classification/model/frozen_inference_graph_real4.pb'
         self.graph = tf.Graph()
