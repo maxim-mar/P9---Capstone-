@@ -10,7 +10,7 @@ class TLClassifier(object):
     def __init__(self):
 
         # Should the detected images of the traffic lights be saved in a separate folder?
-        self.print = False
+        self.img_print = False
 
         # Check if the classifier should run in the Simulator or Carla mode
         self.mode = input ("Press '1' for Simulator Mode \nPress '2' for CARLA Mode\n")
@@ -80,7 +80,7 @@ class TLClassifier(object):
 
 
         # Save images of detected lights in a separate folder "/ros/src/images" => folder have to be created upfront
-        if self.print == True
+        if self.img_print == True
             if self.mode == 1:
                 if scores[0] > self.threshold:
 
