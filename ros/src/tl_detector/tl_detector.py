@@ -90,7 +90,7 @@ class TLDetector(object):
         # On test_lot there are no pose info
         # This is for testing the bag file
         if self.pose is None:
-            self.get_light_state()
+            self.get_light_state(lights)
         else: 
     
             light_wp, state = self.process_traffic_lights()
@@ -138,7 +138,7 @@ class TLDetector(object):
         return math.sqrt((x2-x1)**2 + (y2-y1)**2)
 
 
-    def get_light_state(self):
+    def get_light_state(self, light):
         """Determines the current color of the traffic light
         Args:
             light (TrafficLight): light to classify
