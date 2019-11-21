@@ -10,7 +10,7 @@ class TLClassifier(object):
     def __init__(self):
 
         # Should the detected images of the traffic lights be saved in a separate folder?
-        self.img_print = True
+        self.img_print = False
 
         # Check if the classifier should run in the Simulator or Carla mode
         self.mode = input ("Press '1' for Simulator Mode \nPress '2' for CARLA Mode\n")
