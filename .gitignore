@@ -1,5 +1,5 @@
 *.py[cod]
-
+*.bag
 build
 devel
 
