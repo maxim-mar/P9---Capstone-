@@ -5,6 +5,7 @@ import rospy
 
 GAS_DENSITY = 2.858
 ONE_MPH = 0.44704
+MAX_BRAKE = 700 # to hold Carla while stopped
 
 
 class Controller(object):
@@ -15,7 +16,7 @@ class Controller(object):
         
         kp = 0.3
         ki = 0.1
-        kd = 0.
+        kd = 0.1
         mn = 0. # Min throttle value
         mx = 0.2 # Max throttle value
         self.throttle_controller = PID(kp,ki,kd,mn,mx)
@@ -58,10 +59,10 @@ class Controller(object):
         
         if linear_vel == 0. and current_vel < 0.1:
             throttle = 0
-            brake = torque #N*m to hold the car in place if we are stopped at alight. Acceleration ~= 1 m/s^2
+            brake = MAX_BRAKE #N*m to hold the car in place if we are stopped at alight. Acceleration ~= 1 m/s^2
             
-        elif throttle < .1 and vel_error < 0:
+        elif throttle < 0.1 and vel_error < 0:
                 throttle = 0
-                brake = torque #Torquw N*m
+                brake = torque #Torque N*m
         
         return throttle, brake, steering
