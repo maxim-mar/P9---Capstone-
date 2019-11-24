@@ -16,7 +16,7 @@ from scipy.spatial import KDTree
 from styx_msgs.msg import TrafficLight
 
 min_dist = 100.0
-STATE_COUNT_THRESHOLD = 2
+STATE_COUNT_THRESHOLD = 3
 COLOR_NAME_MAPPING = {TrafficLight.GREEN:'GREEN',
                       TrafficLight.RED:'RED',
                       TrafficLight.YELLOW:'YELLOW',
