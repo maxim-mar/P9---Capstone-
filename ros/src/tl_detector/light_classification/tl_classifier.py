@@ -12,12 +12,12 @@ class TLClassifier(object):
         # Should the detected images of the traffic lights be saved in a separate folder?
         self.img_print = False
 
-        # Check if the classifier should run in the Simulator or Carla mode
-        self.mode = input ("Press '1' for Simulator Mode \nPress '2' for CARLA Mode\n")
+        # Get simulator_mode parameter (1== ON, 0==OFF)
+        self.simulator_mode = rospy.get_param("/simulator_mode")
 
-        if self.mode == 1:
+        if (int(self.simulator_mode) == 1):
             PATH_TO_GRAPH = 'light_classification/model/frozen_inference_graph_sim10.pb'
-        elif self.mode == 2:
+        elif (int(self.simulator_mode) == 0):
             PATH_TO_GRAPH = 'light_classification/model/frozen_inference_graph_real4.pb'
         self.graph = tf.Graph()
 
