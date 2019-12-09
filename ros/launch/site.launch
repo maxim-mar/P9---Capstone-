@@ -23,4 +23,7 @@
 
     <!--Camera Info Publisher -->
     <include file="$(find camera_info_publisher)/launch/camera_info_publisher.launch"/>
+    
+    <!--Simulator ON/OFF parameter -->
+    <param name="simulator_mode" value="0" type="int" />
 </launch>
