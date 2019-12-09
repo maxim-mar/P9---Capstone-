@@ -67,9 +67,9 @@ class TLClassifier(object):
         classes = np.squeeze(classes).astype(np.int32)
 
         # In simulator we mark 3 boxes, in Carla only one
-        if self.mode == 1:
+        if (int(self.simulator_mode) == 1):
             max_boxes = 3
-        elif self.mode == 2:
+        elif (int(self.simulator_mode) == 0):
             max_boxes = 1
 
         for i in range(min(boxes.shape[0], max_boxes)):
